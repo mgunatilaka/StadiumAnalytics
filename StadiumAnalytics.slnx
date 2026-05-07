@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EventSimulator/EventSimulator.csproj" />
+  <Project Path="StadiumAnalytics.Api/StadiumAnalytics.Api.csproj" />
+  <Project Path="StadiumAnalytics.Shared/StadiumAnalytics.Shared.csproj" />
+  <Project Path="StadiumAnalytics.Tests/StadiumAnalytics.Tests.csproj" />
+</Solution>
