@@ -74,12 +74,34 @@ This project uses [Swagger UI (Scalar)](https://github.com/RicoSuter/NSwag/wiki/
 
 ---
 
+## Recent Changes
+
+- **Infrastructure Layer:**
+  - Moved `AppDbContext`, `ISensorEventRepository`, and `SensorEventRepository` to `StadiumAnalytics.Infrastructure`.
+  - Database file `stadium.db` should now be placed in `StadiumAnalytics.Infrastructure/Database/` (update connection string if needed).
+  - `SensorEventChannel` should be implemented in the infrastructure layer.
+
+- **Application Layer:**
+  - `AnalyticsService` and `EventConsumerWorker` remain in the application layer (`StadiumAnalytics.Api`).
+
+- **Health Checks:**
+  - Added ASP.NET Core health checks, including a database check.
+  - Health endpoint available at `/health`.
+
 ## Project Structure
 
-- `StadiumAnalytics.Api` - Main Web API project
-- `StadiumAnalytics.EventSimulator` - Simulates sensor events and sends them to the API
-- `StadiumAnalytics.Shared` - Shared models and contracts
-- `StadiumAnalytics.Tests` - Unit and integration tests
+- `StadiumAnalytics.Api` – Application layer (controllers, services, workers)
+- `StadiumAnalytics.Infrastructure` – Infrastructure layer (data access, messaging, database)
+- `StadiumAnalytics.Shared` – Shared models and interfaces
+- `EventSimulator` – Event simulation utilities
+- `StadiumAnalytics.Tests` – Unit and integration tests
+
+## How to Run
+
+1. Ensure `stadium.db` is in `StadiumAnalytics.Infrastructure/Database/`.
+2. Update the connection string in `appsettings.json` or `Program.cs` if needed.
+3. Build and run the solution.
+4. Access health check at `/health`.
 
 ---
 

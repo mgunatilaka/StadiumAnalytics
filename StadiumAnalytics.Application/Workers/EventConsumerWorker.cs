@@ -1,7 +1,10 @@
-using StadiumAnalytics.Api.Data;
-using StadiumAnalytics.Shared.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using StadiumAnalytics.Infrastructure.Data;
+using StadiumAnalytics.Infrastructure.Messaging;
 
-namespace StadiumAnalytics.Api.Workers;
+namespace StadiumAnalytics.Application.Workers;
 
 public class EventConsumerWorker : BackgroundService
 {

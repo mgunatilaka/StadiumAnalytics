@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using StadiumAnalytics.Api.DTOs;
-using StadiumAnalytics.Api.Services;
+using StadiumAnalytics.Shared.DTOs;
+using StadiumAnalytics.Application.Services;
 
 namespace StadiumAnalytics.Api.Controllers;
 

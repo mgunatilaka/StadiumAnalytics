@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
-using StadiumAnalytics.Api.Data;
-using StadiumAnalytics.Shared.Messaging;
-using StadiumAnalytics.Api.Services;
-using StadiumAnalytics.Api.Workers;
+using StadiumAnalytics.Infrastructure.Data;
+using StadiumAnalytics.Infrastructure.Messaging;
+using StadiumAnalytics.Application.Services;
+using StadiumAnalytics.Application.Workers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ builder.Services.AddControllers()
     // System.Text.Json uses ISO 8601 by default
     options.JsonSerializerOptions.WriteIndented = true;
 });
+
+// Add Health Checks
+builder.Services.AddHealthChecks();
 
 
 // Configure OpenAPI for Scalar
@@ -70,5 +74,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+// Map health check endpoint
+app.MapHealthChecks("/health");
 
 app.Run();

@@ -1,17 +1,12 @@
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using StadiumAnalytics.Shared.Messaging;
 using StadiumAnalytics.Shared.Models;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace EventSimulator
 {
@@ -20,6 +15,7 @@ namespace EventSimulator
         private readonly HttpClient _client;
         private readonly ILogger<EventSimulatorWorker> _logger;
         private readonly Options _options;
+        private readonly ConcurrentQueue<SensorEvent> _eventQueue = new ConcurrentQueue<SensorEvent>();
 
         public class Options
         {
@@ -36,10 +32,8 @@ namespace EventSimulator
 
         public async Task StartAsync(CancellationToken stoppingToken)
         {
-
             _logger.LogInformation("EventSimulatorWorker for {Gate} is starting.", _options.GateName);
             var random = new Random();
-            var types = new[] { "enter", "leave" };
 
             _logger.LogInformation("Random event simulation for {Gate} started. Press 'q' and Enter to stop.", _options.GateName);
 
@@ -64,8 +58,6 @@ namespace EventSimulator
                     Type = "enter"
                 };
 
-                await PostSensorEventAsync(evtEnter, stoppingToken);
-
                 var evtLeave = new SensorEvent
                 {
                     Id = Guid.NewGuid(),
@@ -75,15 +67,61 @@ namespace EventSimulator
                     Type = "leave"
                 };
 
-                await PostSensorEventAsync(evtLeave, stoppingToken);
+                // Enqueue events locally
+                _eventQueue.Enqueue(evtEnter);
+                _eventQueue.Enqueue(evtLeave);
+
+                // Try to process the queue if API is healthy
+                var healthUrl = $"{_options.ApiBaseUrl.TrimEnd('/')}/health";
+                HttpResponseMessage? healthResponse = null;
+                try
+                {
+                    healthResponse = await _client.GetAsync(healthUrl, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning("API health check failed for {Gate}: {Message}", _options.GateName, ex.Message);
+                }
+
+                if (healthResponse != null && healthResponse.IsSuccessStatusCode)
+                {
+                    await ProcessQueueAsync(stoppingToken);
+                }
+                else
+                {
+                    _logger.LogWarning("API is not healthy for {Gate}. Events will be kept in the local queue.", _options.GateName);
+                }
 
                 await Task.Delay(60000, stoppingToken);
-
             }
         }
 
-         
-        private async Task PostSensorEventAsync(SensorEvent evt, CancellationToken stoppingToken)
+        private async Task ProcessQueueAsync(CancellationToken stoppingToken)
+        {
+            while (_eventQueue.TryPeek(out var evt))
+            {
+                try
+                {
+                    var success = await PostSensorEventAsync(evt, stoppingToken);
+                    if (success)
+                    {
+                        _eventQueue.TryDequeue(out _);
+                    }
+                    else
+                    {
+                        // Stop processing if failed, try again later
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning("Exception while processing event queue for {Gate}: {Message}", _options.GateName, ex.Message);
+                    break;
+                }
+            }
+        }
+
+        private async Task<bool> PostSensorEventAsync(SensorEvent evt, CancellationToken stoppingToken)
         {
             var url = $"{_options.ApiBaseUrl.TrimEnd('/')}/api/sensor-events";
 
@@ -92,15 +130,17 @@ namespace EventSimulator
             Request.RequestUri = new Uri(url);
             Request.Content = new StringContent(JsonSerializer.Serialize(evt), Encoding.UTF8, "application/json");
 
-            using var response = await _client.SendAsync(Request);
+            using var response = await _client.SendAsync(Request, stoppingToken);
 
             if (response.IsSuccessStatusCode)
             {
                 _logger.LogInformation("Published event:{Timestamp} {Gate} {Type} {Count}", evt.Timestamp, evt.Gate, evt.Type, evt.NumberOfPeople);
+                return true;
             }
             else
             {
                 _logger.LogWarning("Failed to publish event for {Gate}. Status: {StatusCode}", evt.Gate, response.StatusCode);
+                return false;
             }
         }
     }

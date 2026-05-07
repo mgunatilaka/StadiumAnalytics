@@ -1,10 +1,9 @@
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using StadiumAnalytics.Api.Controllers;
-using StadiumAnalytics.Api.Data;
-using StadiumAnalytics.Api.DTOs;
+using StadiumAnalytics.Infrastructure.Data;
+using StadiumAnalytics.Shared.DTOs;
 
-namespace StadiumAnalytics.Api.Services;
+namespace StadiumAnalytics.Application.Services;
 
 public class AnalyticsService(AppDbContext dbContext) : IAnalyticsService
 {

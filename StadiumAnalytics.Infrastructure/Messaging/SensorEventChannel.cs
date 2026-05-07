@@ -4,7 +4,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using StadiumAnalytics.Shared.Models;
 
-namespace StadiumAnalytics.Shared.Messaging
+namespace StadiumAnalytics.Infrastructure.Messaging
 {
     public class SensorEventChannel : ISensorEventChannel
     {

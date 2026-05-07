@@ -1,4 +1,4 @@
-namespace StadiumAnalytics.Api.DTOs;
+namespace StadiumAnalytics.Shared.DTOs;
 
 public class AnalyticsSummaryDto
 {

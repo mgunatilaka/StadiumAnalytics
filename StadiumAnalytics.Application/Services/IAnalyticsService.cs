@@ -1,6 +1,6 @@
-using StadiumAnalytics.Api.DTOs;
+using StadiumAnalytics.Shared.DTOs;
 
-namespace StadiumAnalytics.Api.Services;
+namespace StadiumAnalytics.Application.Services;
 
 public interface IAnalyticsService
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StadiumAnalytics.Shared.Messaging
+namespace StadiumAnalytics.Infrastructure.Messaging
 {
     public interface ISensorEventChannel
     {

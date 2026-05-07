@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StadiumAnalytics.Api.Data;
+using StadiumAnalytics.Infrastructure.Data;
 using StadiumAnalytics.Shared.Models;
 
 namespace StadiumAnalytics.Tests;

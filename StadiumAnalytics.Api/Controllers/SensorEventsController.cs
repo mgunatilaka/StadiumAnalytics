@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StadiumAnalytics.Shared.Models;
-using StadiumAnalytics.Shared.Messaging;
+using StadiumAnalytics.Infrastructure.Messaging;
 
 namespace StadiumAnalytics.Api.Controllers;
 

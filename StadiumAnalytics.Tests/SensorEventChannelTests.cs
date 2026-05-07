@@ -1,4 +1,4 @@
-using StadiumAnalytics.Shared.Messaging;
+using StadiumAnalytics.Infrastructure.Messaging;
 using StadiumAnalytics.Shared.Models;
 
 namespace StadiumAnalytics.Tests;
