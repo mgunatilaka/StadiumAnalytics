@@ -1,8 +1,8 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using StadiumAnalytics.Infrastructure.Data;
-using StadiumAnalytics.Shared.Models;
 using StadiumAnalytics.Application.Services;
+using StadiumAnalytics.Domain.Models;
 
 namespace StadiumAnalytics.Tests;
 

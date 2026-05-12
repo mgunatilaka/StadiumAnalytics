@@ -1,5 +1,5 @@
+using StadiumAnalytics.Domain.Models;
 using StadiumAnalytics.Infrastructure.Messaging;
-using StadiumAnalytics.Shared.Models;
 
 namespace StadiumAnalytics.Tests;
 public class SensorEventChannelTests
@@ -11,8 +11,8 @@ public class SensorEventChannelTests
         var channel = new SensorEventChannel();
         var events = new List<SensorEvent>
         {
-            new SensorEvent { Gate = "GateA", Type = "enter", NumberOfPeople = 1, Timestamp = DateTime.UtcNow },
-            new SensorEvent { Gate = "GateB", Type = "leave", NumberOfPeople = 2, Timestamp = DateTime.UtcNow.AddSeconds(1) }
+            new() { Gate = "GateA", Type = "enter", NumberOfPeople = 1, Timestamp = DateTime.UtcNow },
+            new() { Gate = "GateB", Type = "leave", NumberOfPeople = 2, Timestamp = DateTime.UtcNow.AddSeconds(1) }
         };
 
         // Act

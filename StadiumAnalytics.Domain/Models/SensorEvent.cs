@@ -1,6 +1,6 @@
 using System;
 
-namespace StadiumAnalytics.Shared.Models
+namespace StadiumAnalytics.Domain.Models
 {
     public class SensorEvent
     {

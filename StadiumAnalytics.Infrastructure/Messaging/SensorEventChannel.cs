@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using StadiumAnalytics.Shared.Models;
+using StadiumAnalytics.Domain.Interface.Messaging;
+using StadiumAnalytics.Domain.Models;
 
 namespace StadiumAnalytics.Infrastructure.Messaging
 {

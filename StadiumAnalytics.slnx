@@ -2,7 +2,7 @@
   <Project Path="EventSimulator/EventSimulator.csproj" />
   <Project Path="StadiumAnalytics.Api/StadiumAnalytics.Api.csproj" />
   <Project Path="StadiumAnalytics.Application/StadiumAnalytics.Application.csproj" Id="7adb7e58-ae34-4609-8528-28402eb77cfb" />
+  <Project Path="StadiumAnalytics.Domain/StadiumAnalytics.Domain.csproj" />
   <Project Path="StadiumAnalytics.Infrastructure/StadiumAnalytics.Infrastructure.csproj" Id="5c6426b7-9d83-4112-bba6-fb958e814027" />
-  <Project Path="StadiumAnalytics.Shared/StadiumAnalytics.Shared.csproj" />
   <Project Path="StadiumAnalytics.Tests/StadiumAnalytics.Tests.csproj" />
 </Solution>

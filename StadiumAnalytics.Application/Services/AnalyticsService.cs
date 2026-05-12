@@ -1,7 +1,8 @@
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using StadiumAnalytics.Domain.Models;
 using StadiumAnalytics.Infrastructure.Data;
-using StadiumAnalytics.Shared.DTOs;
+using StadiumAnalytics.Application.DTOs;
 
 namespace StadiumAnalytics.Application.Services;
 
@@ -33,10 +34,10 @@ public class AnalyticsService(AppDbContext dbContext) : IAnalyticsService
         return await groupedQuery.ToListAsync(cancellationToken);
     }
 
-    private static IQueryable<Shared.Models.SensorEvent> BuildFilteredQuery(
-        string? gate, string? type, DateTimeOffset? startTime, DateTimeOffset? endTime, IQueryable<Shared.Models.SensorEvent> query)
+    private static IQueryable<SensorEvent> BuildFilteredQuery(
+        string? gate, string? type, DateTimeOffset? startTime, DateTimeOffset? endTime, IQueryable<SensorEvent> query)
     {
-        var predicate = PredicateBuilder.New<Shared.Models.SensorEvent>(true); // true indicates the start of a new predicate with no conditions.
+        var predicate = PredicateBuilder.New<SensorEvent>(true); // true indicates the start of a new predicate with no conditions.
 
         if (!string.IsNullOrWhiteSpace(gate))
         {

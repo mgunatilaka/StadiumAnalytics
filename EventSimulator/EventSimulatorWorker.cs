@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using StadiumAnalytics.Shared.Models;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -7,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using StadiumAnalytics.Domain.Models;
 
 namespace EventSimulator
 {

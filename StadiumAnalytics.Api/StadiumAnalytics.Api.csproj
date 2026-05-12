@@ -7,6 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Database\**" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="Services\**" />
+    <Content Remove="Database\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Database\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Database\**" />
+    <None Remove="Data\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
@@ -19,8 +34,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StadiumAnalytics.Application\StadiumAnalytics.Application.csproj" />
+    <ProjectReference Include="..\StadiumAnalytics.Domain\StadiumAnalytics.Domain.csproj" />
     <ProjectReference Include="..\StadiumAnalytics.Infrastructure\StadiumAnalytics.Infrastructure.csproj" />
-    <ProjectReference Include="..\StadiumAnalytics.Shared\StadiumAnalytics.Shared.csproj" />
+    <ProjectReference Include="..\StadiumAnalytics.Shared\StadiumAnalytics.Domain.csproj" />
   </ItemGroup>
 
 </Project>

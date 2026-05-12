@@ -1,8 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StadiumAnalytics.Domain.Interface.Messaging;
+using StadiumAnalytics.Domain.Models;
 using StadiumAnalytics.Infrastructure.Data;
-using StadiumAnalytics.Infrastructure.Messaging;
 
 namespace StadiumAnalytics.Application.Workers;
 
@@ -41,7 +42,7 @@ public class EventConsumerWorker : BackgroundService
     }
 
     // Extracted for unit testing
-    protected virtual async Task ProcessSensorEventAsync(Shared.Models.SensorEvent sensorEvent, CancellationToken cancellationToken)
+    protected virtual async Task ProcessSensorEventAsync(SensorEvent sensorEvent, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Consuming event for Gate: {Gate}", sensorEvent.Gate);
 

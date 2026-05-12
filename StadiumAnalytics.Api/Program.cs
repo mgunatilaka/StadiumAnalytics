@@ -4,6 +4,7 @@ using StadiumAnalytics.Infrastructure.Data;
 using StadiumAnalytics.Infrastructure.Messaging;
 using StadiumAnalytics.Application.Services;
 using StadiumAnalytics.Application.Workers;
+using StadiumAnalytics.Domain.Interface.Messaging;
 
 
 var builder = WebApplication.CreateBuilder(args);

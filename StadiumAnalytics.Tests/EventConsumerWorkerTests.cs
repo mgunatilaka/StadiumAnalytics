@@ -7,9 +7,9 @@ using Moq;
 using Moq.Protected;
 using StadiumAnalytics.Infrastructure.Data;
 using StadiumAnalytics.Application.Workers;
-using StadiumAnalytics.Infrastructure.Messaging;
-using StadiumAnalytics.Shared.Models;
 using Xunit;
+using StadiumAnalytics.Domain.Models;
+using StadiumAnalytics.Domain.Interface.Messaging;
 namespace StadiumAnalytics.Tests;
 public class EventConsumerWorkerTests
 {

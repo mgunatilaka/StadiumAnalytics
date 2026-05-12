@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+
+using StadiumAnalytics.Domain.Models;
 using StadiumAnalytics.Infrastructure.Data;
-using StadiumAnalytics.Shared.Models;
 
 namespace StadiumAnalytics.Tests;
 public class SensorEventRepositoryTests

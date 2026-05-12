@@ -11,8 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StadiumAnalytics.Domain\StadiumAnalytics.Domain.csproj" />
     <ProjectReference Include="..\StadiumAnalytics.Infrastructure\StadiumAnalytics.Infrastructure.csproj" />
-    <ProjectReference Include="..\StadiumAnalytics.Shared\StadiumAnalytics.Shared.csproj" />
+    <ProjectReference Include="..\StadiumAnalytics.Shared\StadiumAnalytics.Domain.csproj" />
   </ItemGroup>
 
 </Project>

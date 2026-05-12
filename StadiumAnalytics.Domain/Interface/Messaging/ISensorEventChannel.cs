@@ -1,9 +1,9 @@
-﻿using StadiumAnalytics.Shared.Models;
+﻿using StadiumAnalytics.Domain.Models;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StadiumAnalytics.Infrastructure.Messaging
+namespace StadiumAnalytics.Domain.Interface.Messaging
 {
     public interface ISensorEventChannel
     {

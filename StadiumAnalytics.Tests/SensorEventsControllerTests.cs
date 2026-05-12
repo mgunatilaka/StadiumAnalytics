@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using StadiumAnalytics.Api.Controllers;
-using StadiumAnalytics.Infrastructure.Messaging;
-using StadiumAnalytics.Shared.Models;
+using StadiumAnalytics.Domain.Interface.Messaging;
+using StadiumAnalytics.Domain.Models;
 namespace StadiumAnalytics.Tests;
 public class SensorEventsControllerTests
 {
