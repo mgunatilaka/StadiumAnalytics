@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StadiumAnalytics.Domain\StadiumAnalytics.Domain.csproj" />
-    <ProjectReference Include="..\StadiumAnalytics.Shared\StadiumAnalytics.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/StadiumAnalytics.Api/stadium.db
+/StadiumAnalytics.Api/stadium.db-shm
+/StadiumAnalytics.Api/stadium.db-wal

@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using StadiumAnalytics.Application.DTOs;
 using StadiumAnalytics.Application.Services;
 
-namespace StadiumAnalytics.Api.Controllers;
+namespace StadiumAnalytics.Api.Controllers.V1;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class AnalyticsController(IAnalyticsService analyticsService, ILogger<AnalyticsController> logger) : ControllerBase
 {
     

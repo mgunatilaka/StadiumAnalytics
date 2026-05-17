@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using StadiumAnalytics.Domain.Models;
+using Polly;
+using Polly.Retry;
 
 namespace EventSimulator
 {
@@ -16,6 +18,7 @@ namespace EventSimulator
         private readonly ILogger<EventSimulatorWorker> _logger;
         private readonly Options _options;
         private readonly ConcurrentQueue<SensorEvent> _eventQueue = new ConcurrentQueue<SensorEvent>();
+        private readonly AsyncRetryPolicy<HttpResponseMessage> _retryPolicy;
 
         public class Options
         {
@@ -28,6 +31,15 @@ namespace EventSimulator
             _client = client;
             _logger = logger;
             _options = options;
+
+            _retryPolicy = Policy
+                .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+                .Or<HttpRequestException>()
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), 
+                (result, timeSpan, retryCount, context) =>
+                {
+                    _logger.LogWarning("Request failed. Waiting {TimeSpan} before next retry. Retry attempt {RetryCount}", timeSpan, retryCount);
+                });
         }
 
         public async Task StartAsync(CancellationToken stoppingToken)
@@ -76,7 +88,7 @@ namespace EventSimulator
                 HttpResponseMessage? healthResponse = null;
                 try
                 {
-                    healthResponse = await _client.GetAsync(healthUrl, stoppingToken);
+                    healthResponse = await _retryPolicy.ExecuteAsync(() => _client.GetAsync(healthUrl, stoppingToken));
                 }
                 catch (Exception ex)
                 {
@@ -123,23 +135,33 @@ namespace EventSimulator
 
         private async Task<bool> PostSensorEventAsync(SensorEvent evt, CancellationToken stoppingToken)
         {
-            var url = $"{_options.ApiBaseUrl.TrimEnd('/')}/api/sensor-events";
+            var url = $"{_options.ApiBaseUrl.TrimEnd('/')}/api/v1/sensor-events";
 
-            using var Request = new HttpRequestMessage();
-            Request.Method = HttpMethod.Post;
-            Request.RequestUri = new Uri(url);
-            Request.Content = new StringContent(JsonSerializer.Serialize(evt), Encoding.UTF8, "application/json");
-
-            using var response = await _client.SendAsync(Request, stoppingToken);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                _logger.LogInformation("Published event:{Timestamp} {Gate} {Type} {Count}", evt.Timestamp, evt.Gate, evt.Type, evt.NumberOfPeople);
-                return true;
+                var response = await _retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var request = new HttpRequestMessage(HttpMethod.Post, url)
+                    {
+                        Content = new StringContent(JsonSerializer.Serialize(evt), Encoding.UTF8, "application/json")
+                    };
+                    return await _client.SendAsync(request, stoppingToken);
+                });
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("Published event:{Timestamp} {Gate} {Type} {Count}", evt.Timestamp, evt.Gate, evt.Type, evt.NumberOfPeople);
+                    return true;
+                }
+                else
+                {
+                    _logger.LogWarning("Failed to publish event for {Gate}. Status: {StatusCode}", evt.Gate, response.StatusCode);
+                    return false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogWarning("Failed to publish event for {Gate}. Status: {StatusCode}", evt.Gate, response.StatusCode);
+                _logger.LogError("Critical failure publishing event for {Gate}: {Message}", evt.Gate, ex.Message);
                 return false;
             }
         }

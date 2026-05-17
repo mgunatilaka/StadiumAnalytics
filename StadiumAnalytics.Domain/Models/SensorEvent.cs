@@ -2,7 +2,7 @@ using System;
 
 namespace StadiumAnalytics.Domain.Models
 {
-    public class SensorEvent
+    public record SensorEvent
     {
         public Guid Id { get; set; }
         public string Gate { get; set; } = string.Empty;
